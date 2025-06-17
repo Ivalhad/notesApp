@@ -1,0 +1,23 @@
+/* Reset dasar */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 1rem;
+}
+app-bar {
+  display: block;
+  margin-bottom: 1rem;
+}
+main {
+  max-width: 800px;
+  margin: 0 auto;
+}
+/* note-list styling di dalam Web Component */
+/* note-item styling di dalam komponennya */
+/* note-input styling di dalam komponennya */
