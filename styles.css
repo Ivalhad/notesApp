@@ -1,4 +1,4 @@
-/* Reset dasar */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,6 +18,3 @@ main {
   max-width: 800px;
   margin: 0 auto;
 }
-/* note-list styling di dalam Web Component */
-/* note-item styling di dalam komponennya */
-/* note-input styling di dalam komponennya */
