@@ -1,4 +1,3 @@
-// js/components/note-input.js
 const templateNoteInput = document.getElementById('template-note-input');
 class NoteInput extends HTMLElement {
   constructor() {

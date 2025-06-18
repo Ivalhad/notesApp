@@ -1,4 +1,3 @@
-// js/components/app-bar.js
 const templateAppBar = document.getElementById('template-app-bar');
 class AppBar extends HTMLElement {
   constructor() {

@@ -5,7 +5,6 @@ import './components/note-item.js';
 import './components/note-list.js';
 import { generateId } from './utils.js';
 
-// Dummy data original dengan properti body dan createdAt:
 const notesData = [
   {
     id: 'notes-jT-jjsyz61J8XKiI',
@@ -114,19 +113,18 @@ const notesData = [
   },
 ];
 
-// Mapping ke format internal: {id, title, content, date}
 const initialNotes = notesData.map(n => ({
   id: n.id,
   title: n.title,
-  content: n.body,       // map body → content
-  date: n.createdAt      // map createdAt → date
+  content: n.body,      
+  date: n.createdAt      
 }));
 
 window.addEventListener('DOMContentLoaded', () => {
   const noteListEl = document.querySelector('note-list');
   const noteInputEl = document.querySelector('note-input');
   if (noteListEl) {
-    // Render dummy awal yang sudah di-mapping
+
     initialNotes.forEach(n => noteListEl.addNote(n));
   }
   if (noteInputEl && noteListEl) {

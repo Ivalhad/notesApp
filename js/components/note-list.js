@@ -1,4 +1,3 @@
-// js/components/note-list.js
 const templateNoteList = document.getElementById('template-note-list');
 class NoteList extends HTMLElement {
   constructor() {
@@ -9,14 +8,14 @@ class NoteList extends HTMLElement {
     this.innerHTML = '';
     this.appendChild(templateNoteList.content.cloneNode(true));
     this.container = this.querySelector('.note-list-container');
-    // Tangani penghapusan: event dari note-item akan bubble ke sini
+
     this.addEventListener('note-deleted', this.removeHandler);
   }
   disconnectedCallback() {
     this.removeEventListener('note-deleted', this.removeHandler);
   }
   addNote(note) {
-    // note: { id, title, content, date }
+
     const itemElem = document.createElement('note-item');
     itemElem.setAttribute('data-id', note.id);
     itemElem.setAttribute('data-title', note.title);

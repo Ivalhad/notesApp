@@ -1,4 +1,3 @@
-// js/components/note-item.js
 import { formatDate } from '../utils.js';
 const templateNoteItem = document.getElementById('template-note-item');
 class NoteItem extends HTMLElement {
