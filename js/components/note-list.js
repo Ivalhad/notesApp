@@ -1,43 +1,38 @@
-const templateList = document.createElement('template');
-templateList.innerHTML = `
-<style>
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-</style>
-<div class="grid-container"></div>
-`;
+// js/components/note-list.js
+const templateNoteList = document.getElementById('template-note-list');
 class NoteList extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({ mode: 'open' });
-    shadow.appendChild(templateList.content.cloneNode(true));
-    this.container = shadow.querySelector('.grid-container');
+    this.removeHandler = this.removeHandler.bind(this);
   }
-  set notes(dataArray) {
-    this._notes = dataArray;
-    this._render();
+  connectedCallback() {
+    this.innerHTML = '';
+    this.appendChild(templateNoteList.content.cloneNode(true));
+    this.container = this.querySelector('.note-list-container');
+    // Tangani penghapusan: event dari note-item akan bubble ke sini
+    this.addEventListener('note-deleted', this.removeHandler);
   }
-  get notes() {
-    return this._notes;
+  disconnectedCallback() {
+    this.removeEventListener('note-deleted', this.removeHandler);
   }
-  _render() {
-    this.container.innerHTML = '';
-    // Hanya tampilkan yang belum di-archive
-    const activeNotes = this._notes.filter(n => !n.archived);
-    if (activeNotes.length === 0) {
-      const emptyMsg = document.createElement('p');
-      emptyMsg.textContent = 'No notes available.';
-      this.container.appendChild(emptyMsg);
-      return;
+  addNote(note) {
+    // note: { id, title, content, date }
+    const itemElem = document.createElement('note-item');
+    itemElem.setAttribute('data-id', note.id);
+    itemElem.setAttribute('data-title', note.title);
+    itemElem.setAttribute('data-content', note.content);
+    itemElem.setAttribute('data-date', note.date);
+    this.container.appendChild(itemElem);
+  }
+  removeHandler(e) {
+    const { id } = e.detail;
+    const items = Array.from(this.container.querySelectorAll('note-item'));
+    for (const item of items) {
+      if (item.getAttribute('data-id') === id) {
+        this.container.removeChild(item);
+        break;
+      }
     }
-    activeNotes.forEach(noteData => {
-      const item = document.createElement('note-item');
-      item.note = noteData;
-      this.container.appendChild(item);
-    });
   }
 }
 customElements.define('note-list', NoteList);

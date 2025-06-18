@@ -1,12 +1,13 @@
+// js/app.js
 import './components/app-bar.js';
 import './components/note-input.js';
 import './components/note-item.js';
 import './components/note-list.js';
-import { formatDate, generateId } from './utils.js';
+import { generateId } from './utils.js';
 
-// Data dummy
+// Dummy data original dengan properti body dan createdAt:
 const notesData = [
-   {
+  {
     id: 'notes-jT-jjsyz61J8XKiI',
     title: 'Welcome to Notes, Dimas!',
     body: 'Welcome to Notes! This is your first note. You can archive it, delete it, or create new ones.',
@@ -113,36 +114,27 @@ const notesData = [
   },
 ];
 
-let notes = [...notesData];
+// Mapping ke format internal: {id, title, content, date}
+const initialNotes = notesData.map(n => ({
+  id: n.id,
+  title: n.title,
+  content: n.body,       // map body → content
+  date: n.createdAt      // map createdAt → date
+}));
 
-function updateList() {
+window.addEventListener('DOMContentLoaded', () => {
   const noteListEl = document.querySelector('note-list');
+  const noteInputEl = document.querySelector('note-input');
   if (noteListEl) {
-    noteListEl.notes = notes;
+    // Render dummy awal yang sudah di-mapping
+    initialNotes.forEach(n => noteListEl.addNote(n));
   }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  updateList();
-});
-
-document.addEventListener('note-add', event => {
-  const newNote = event.detail;
-  notes = [newNote, ...notes];
-  updateList();
-});
-
-document.addEventListener('note-delete', event => {
-  const { id } = event.detail;
-  notes = notes.filter(n => n.id !== id);
-  updateList();
-});
-
-document.addEventListener('note-toggle-archive', event => {
-  const { id } = event.detail;
-  notes = notes.map(n => {
-    if (n.id === id) return { ...n, archived: !n.archived };
-    return n;
-  });
-  updateList();
+  if (noteInputEl && noteListEl) {
+    noteInputEl.addEventListener('note-added', e => {
+      const { title, content } = e.detail;
+      const id = generateId();
+      const date = new Date().toISOString();
+      noteListEl.addNote({ id, title, content, date });
+    });
+  }
 });
