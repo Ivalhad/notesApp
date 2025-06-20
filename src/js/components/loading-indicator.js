@@ -3,7 +3,6 @@ class LoadingIndicator extends HTMLElement {
     super();
   }
   connectedCallback() {
-    // Append overlay div
     const overlay = document.createElement('div');
     overlay.className = 'loading-overlay';
     const spinner = document.createElement('div');

@@ -28,9 +28,9 @@ class NoteInput extends HTMLElement {
     this.innerHTML = `
       <div class="note-input-container">
         <form>
-          <input type="text" id="title" placeholder="Note title" required />
-          <textarea id="body" placeholder="Note body" rows="4" required></textarea>
-          <button type="submit">Add Note</button>
+          <input type="text" id="title" placeholder="Judul Catatan" required />
+          <textarea id="body" placeholder="Isi Catatan" rows="4" required></textarea>
+          <button type="submit">Tambah Catatan</button>
         </form>
       </div>
     `;

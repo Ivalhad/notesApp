@@ -9,9 +9,7 @@ class NoteList extends HTMLElement {
   connectedCallback() {
     this.render();
     this.fetchAndRenderNotes();
-    // Listen for add event globally since note-input is sibling
     document.addEventListener('note-add-requested', this._onAdd);
-    // Delete, archive, unarchive events bubble from children
     this.addEventListener('note-delete-requested', async (e) => {
       const { id } = e.detail;
       await this.deleteNoteAPI(id);
@@ -27,6 +25,13 @@ class NoteList extends HTMLElement {
       await this.unarchiveNoteAPI(id);
       await this.fetchAndRenderNotes();
     });
+    this.addEventListener('note-view-requested', async (e) => {
+      const { id } = e.detail;
+
+      const detailEl = document.createElement('note-detail');
+      detailEl.noteId = id;
+
+    });
   }
   disconnectedCallback() {
     document.removeEventListener('note-add-requested', this._onAdd);
@@ -37,7 +42,6 @@ class NoteList extends HTMLElement {
     await this.fetchAndRenderNotes();
   }
   render() {
-    // Create container
     this.innerHTML = `
       <div class="note-list-container">
         <ul></ul>
@@ -82,7 +86,7 @@ class NoteList extends HTMLElement {
       });
       const resJson = await response.json();
       if (resJson.status !== 'success') {
-        alert('Failed to create note: ' + resJson.message);
+        alert('Gagal membuat catatan: ' + resJson.message);
       }
     } catch (error) {
       console.error('Error creating note', error);
@@ -97,7 +101,7 @@ class NoteList extends HTMLElement {
       const response = await fetch(`https://notes-api.dicoding.dev/v2/notes/${id}`, { method: 'DELETE' });
       const resJson = await response.json();
       if (resJson.status !== 'success') {
-        alert('Failed to delete note: ' + resJson.message);
+        alert('Gagal menghapus catatan: ' + resJson.message);
       }
     } catch (error) {
       console.error('Error deleting note', error);
@@ -112,7 +116,7 @@ class NoteList extends HTMLElement {
       const response = await fetch(`https://notes-api.dicoding.dev/v2/notes/${id}/archive`, { method: 'POST' });
       const resJson = await response.json();
       if (resJson.status !== 'success') {
-        alert('Failed to archive note: ' + resJson.message);
+        alert('Gagal mengarsipkan catatan: ' + resJson.message);
       }
     } catch (error) {
       console.error('Error archiving note', error);
@@ -127,7 +131,7 @@ class NoteList extends HTMLElement {
       const response = await fetch(`https://notes-api.dicoding.dev/v2/notes/${id}/unarchive`, { method: 'POST' });
       const resJson = await response.json();
       if (resJson.status !== 'success') {
-        alert('Failed to unarchive note: ' + resJson.message);
+        alert('Gagal membatalkan arsip catatan: ' + resJson.message);
       }
     } catch (error) {
       console.error('Error unarchiving note', error);
